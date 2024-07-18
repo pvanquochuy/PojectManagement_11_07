@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagement_11_07.Data;
 using ProjectManagement_11_07.Repository;
-using ProjectManagement_11_07.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +11,7 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped< AccountRepository>();
+builder.Services.AddScoped< AdminRepository>();
 
 
 

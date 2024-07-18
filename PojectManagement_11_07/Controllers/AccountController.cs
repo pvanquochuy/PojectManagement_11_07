@@ -39,9 +39,12 @@ namespace ProjectManagement_11_07.Controllers
                     if (result.RoleId == 1)
                     {
                         TempData["SuccessMessage"] = "Đăng nhập thành công";
-                        return RedirectToAction("Register", "Account");
+                        return RedirectToAction("Home", "Admin");
                     }
-                    return RedirectToAction("Index", "Home");
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
@@ -61,9 +64,6 @@ namespace ProjectManagement_11_07.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-
-           
-
             if (ModelState.IsValid)
             {
                 var result = await _accountRepository.RegisterAccount(registerViewModel);
@@ -78,8 +78,13 @@ namespace ProjectManagement_11_07.Controllers
 
                 }
             }
-            return View(registerViewModel);
-
+            return View("Login");
+        }
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Newtonsoft.Json
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,6 +10,13 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ProjectManagement_11_07.styles.css" asp-append-version="true" />
 </head>
+<style>
+    .btn-soft-primary {
+            color: #038edc;
+            background-color: rgba(3, 142, 220, .1);
+            border-color: transparent !important;
+        }
+</style>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -26,6 +35,24 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                </div>
+                  <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+                    <div class="d-flex ms-auto">
+                        @{
+                            var ndjson = Context.Session.GetString("Users");
+                            if (ndjson != null)
+                            {
+                                var user = JsonConvert.DeserializeObject<Users>(ndjson);
+                                <a class="btn btn-soft-primary me-2" href="#" role="button">@user.FullName</a>
+                                <a class="btn btn-soft-primary me-2" href="/Account/Logout" role="button">Đăng xuất</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-soft-primary me-2" href="/Account/Login" role="button">Đăng nhập</a>
+                                <a class="btn btn-soft-primary" href="/Account/Register" role="button">Đăng kí</a>
+                            }
+                        }
+                    </div>
                 </div>
             </div>
         </nav>

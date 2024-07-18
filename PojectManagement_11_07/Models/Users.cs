@@ -26,6 +26,9 @@ namespace ProjectManagement_11_07.Models
         [EmailAddress] // Add EmailAddress attribute for better validation
         public string Email { get; set; }
 
+        [StringLength(255)] 
+        public string ImageUrl { get; set; }
+
         public int RoleId { get; set; } // Assuming a separate Role table exists
 
         [ForeignKey("RoleId")]

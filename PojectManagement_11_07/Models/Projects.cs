@@ -17,12 +17,14 @@ namespace ProjectManagement_11_07.Models
         [StringLength(255)]
         public string ProjectDescription { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
+
+        public String StatusProject { get; set; }
 
         public ICollection<Tasks> Tasks { get; set; }
 
-        public ICollection<ProjectUser> ProjectUsers { get; set; }
+        public ICollection<ProjectUser> ProjectUsers { get; set; } = new List<ProjectUser>();  
 
        
     }

@@ -13,5 +13,8 @@ namespace ProjectManagement_11_07.Models
         [StringLength(100)]
         public string RoleName { get; set; }
 
+        public ICollection<ProjectUser> ProjectUsers { get; set; }
+
+
     }
 }

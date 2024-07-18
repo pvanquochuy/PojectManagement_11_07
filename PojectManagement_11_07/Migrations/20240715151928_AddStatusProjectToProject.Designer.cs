@@ -3,17 +3,19 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectManagement_11_07.Data;
 
 #nullable disable
 
-namespace PojectManagement_11_07.Migrations
+namespace ProjectManagement_11_07.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240715151928_AddStatusProjectToProject")]
+    partial class AddStatusProjectToProject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,11 +156,6 @@ namespace PojectManagement_11_07.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -188,7 +185,7 @@ namespace PojectManagement_11_07.Migrations
                         .IsRequired();
 
                     b.HasOne("ProjectManagement_11_07.Models.Roles", "Role")
-                        .WithMany("ProjectUsers")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -252,11 +249,6 @@ namespace PojectManagement_11_07.Migrations
                     b.Navigation("ProjectUsers");
 
                     b.Navigation("Tasks");
-                });
-
-            modelBuilder.Entity("ProjectManagement_11_07.Models.Roles", b =>
-                {
-                    b.Navigation("ProjectUsers");
                 });
 
             modelBuilder.Entity("ProjectManagement_11_07.Models.Tasks", b =>
