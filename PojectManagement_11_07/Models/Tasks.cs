@@ -18,6 +18,8 @@ namespace ProjectManagement_11_07.Models
 
         [DataType(DataType.DateTime)]
         public DateTime EndDate { get; set; }
+        
+        public String StatusTask { get; set; }
 
         public int ProjectId { get; set; } // Assuming a separate Project table exists
 

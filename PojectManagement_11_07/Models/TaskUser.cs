@@ -14,5 +14,7 @@ namespace ProjectManagement_11_07.Models
 
         [ForeignKey("UserId")]
         public Users User { get; set; }
+
+
     }
 }

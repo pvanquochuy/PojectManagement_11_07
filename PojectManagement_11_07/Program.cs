@@ -12,6 +12,8 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped< AccountRepository>();
 builder.Services.AddScoped< AdminRepository>();
+builder.Services.AddScoped<TaskRepository>();
+
 
 
 

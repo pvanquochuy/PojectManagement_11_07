@@ -29,7 +29,7 @@ namespace ProjectManagement_11_07.Repository
             return await _dbContext.Users.ToListAsync();
         }
 
-        public async Task<bool>  AddProjectWithUsers(AddProjectViewModel model)
+        public async Task<bool> AddProjectWithUsers(AddProjectViewModel model)
         {
             var newProject = new Projects
             {
@@ -41,8 +41,8 @@ namespace ProjectManagement_11_07.Repository
                 ProjectUsers = new List<ProjectUser>() // Initialize an empty list of project users if needed
             };
 
-               _dbContext.Projects.Add(newProject);
-                await _dbContext.SaveChangesAsync();
+            _dbContext.Projects.Add(newProject);
+            await _dbContext.SaveChangesAsync();
 
             foreach (var userId in model.SelectedUserIds)
             {
@@ -53,21 +53,21 @@ namespace ProjectManagement_11_07.Repository
                     RoleId = 2 // Set role ID as needed
                 };
 
-                 _dbContext.ProjectUser.Add(projectUser);
+                _dbContext.ProjectUser.Add(projectUser);
                 await _dbContext.SaveChangesAsync();
             }
-            return true; 
+            return true;
         }
 
         public async Task DeleteProject(int id)
         {
             var project = await _dbContext.Projects.FindAsync(id);
-            if(project != null)
+            if (project != null)
             {
                 _dbContext.Projects.Remove(project);
                 await _dbContext.SaveChangesAsync();
             }
-               
+
         }
 
         public async Task<Projects> GetProjectById(int projectId)
@@ -113,6 +113,24 @@ namespace ProjectManagement_11_07.Repository
             await _dbContext.SaveChangesAsync();
             return true;
         }
-    }
 
+     
+
+        public async Task<List<Projects>> SearchProjectsByName(string searchString)
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                return await _dbContext.Projects
+                    .Include(p => p.ProjectUsers)
+                    .ToListAsync();
+            }
+
+            return await _dbContext.Projects
+                .Include(p => p.ProjectUsers)
+                .Where(p => p.ProjectName.Contains(searchString))
+                .ToListAsync();
+        }
+
+
+    }
 }

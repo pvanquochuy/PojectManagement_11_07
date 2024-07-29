@@ -14,5 +14,6 @@ namespace ProjectManagement_11_07.Repository.IRepository
 
         Task<Projects> GetProjectById(int projectId);
 
+        Task<List<Projects>> SearchProjectsByName(string searchString);
     }
 }

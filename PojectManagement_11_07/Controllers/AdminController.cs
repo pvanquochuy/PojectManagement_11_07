@@ -47,7 +47,6 @@ namespace ProjectManagement_11_07.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProject(AddProjectViewModel model)
         {
-            AddProjectViewModel test = model;
 
             if (ModelState.IsValid)
             {
@@ -115,6 +114,13 @@ namespace ProjectManagement_11_07.Controllers
 
             return View("AddProject", model);
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchProjectsByName(string searchString)
+        {
+            var projects = await _adminRepository.SearchProjectsByName(searchString);
+            return PartialView("_ProjectListPartial", projects);
         }
 
     }
