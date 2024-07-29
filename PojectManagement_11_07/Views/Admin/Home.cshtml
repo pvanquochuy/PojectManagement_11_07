@@ -91,11 +91,21 @@
                     Thêm Dự Án
             </a>
         </div>
-        <div class="d-flex flex-column flex-sm-row mb-4">
+         <div class="d-flex flex-column flex-sm-row mb-4">
             <input type="search" id="searchBox" class="form-control rounded me-sm-2 mb-2 mb-sm-0" placeholder="Dự án..." aria-label="Search" aria-describedby="search-addon" />
+            <select id="statusProject" class="form-control rounded me-sm-2 mb-2 mb-sm-0">
+                <option value="">Tất cả trạng thái</option>
+                <option value="Đang thực hiện">Đang thực hiện</option>
+                <option value="Hoàn thành">Hoàn thành</option>
+            </select>
+            <input type="number" id="minMemberCount" class="form-control rounded me-sm-2 mb-2 mb-sm-0" placeholder="Số lượng thành viên (từ)" aria-label="Min Member Count" />
+            <input type="number" id="maxMemberCount" class="form-control rounded me-sm-2 mb-2 mb-sm-0" placeholder="Số lượng thành viên (đến)" aria-label="Max Member Count" />
+            <input type="date" id="startDate" class="form-control rounded me-sm-2 mb-2 mb-sm-0" aria-label="Start Date" />
             <button type="button" class="btn btn-soft-primary" onclick="searchProjects()">Tìm</button>
         </div>
+
     </div>
+
     <div class="row" id="all-projects">
          @await Html.PartialAsync("_ProjectListPartial", Model.Projects)
     </div>
@@ -134,8 +144,15 @@
 
     async function searchProjects() {
         const searchString = document.getElementById('searchBox').value;
+        const statusProject = document.getElementById('statusProject').value;
+        const minMemberCount = document.getElementById('minMemberCount').value;
+        const maxMemberCount = document.getElementById('maxMemberCount').value;
+        const startDate = document.getElementById('startDate').value;
+
+        const url = `@Url.Action("SearchProjects", "Admin")?searchString=${encodeURIComponent(searchString)}&statusProject=${encodeURIComponent(statusProject)}&minMemberCount=${encodeURIComponent(minMemberCount)}&maxMemberCount=${encodeURIComponent(maxMemberCount)}&startDate=${encodeURIComponent(startDate)}`;
+
         try {
-            const response = await fetch(`@Url.Action("SearchProjectsByName", "Admin")?searchString=${encodeURIComponent(searchString)}`);
+            const response = await fetch(url);
             if (response.ok) {
                 const result = await response.text();
                 document.getElementById('all-projects').innerHTML = result;

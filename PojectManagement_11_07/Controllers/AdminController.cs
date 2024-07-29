@@ -117,9 +117,9 @@ namespace ProjectManagement_11_07.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SearchProjectsByName(string searchString)
+        public async Task<IActionResult> SearchProjects(string searchString, string statusProject, int? minMemberCount, int? maxMemberCount, DateTime? startDate)
         {
-            var projects = await _adminRepository.SearchProjectsByName(searchString);
+            var projects = await _adminRepository.SearchProjects(searchString, statusProject, minMemberCount, maxMemberCount, startDate);
             return PartialView("_ProjectListPartial", projects);
         }
 

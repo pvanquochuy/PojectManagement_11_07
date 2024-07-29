@@ -113,7 +113,8 @@ namespace ProjectManagement_11_07.Controllers
         public async Task<IActionResult> SearchTaskByName(string searchString)
         {
             var task = await _taskRepository.SearchTaskByName(searchString);
-            return View("Task", task);
+
+            return View("/Views/Admin/AddTask.cshtml", task);
         }
 
         [HttpGet]

@@ -5,10 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task</title>
-    @*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">*@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
+    
+<style>
         .task-board {
             display: flex;
             justify-content: space-between;
@@ -117,6 +116,7 @@
         }
        
     </style>
+
 </head>
 <body>
 <div class="container mt-5">
@@ -134,81 +134,14 @@
     </div>
 
     <h1  style="color: #038EDC;">Dự Án: @Model.ProjectName</h1>
+    @await Html.PartialAsync("/Views/Admin/_TaskListPartial.cshtml", Model)
 
-    <div class="task-board" >
-        <div class="task-list" id="processingTasks" ondrop="drop(event, this)" ondragover="allowDrop(event)" style="max-height: 550px; overflow: auto;">
-            <h4  style="color: #038EDC;">Đang thực hiện: @Model.ProcessingTasks.Count</h4>
-             @foreach(var task in Model.ProcessingTasks){
-                <div class="task" draggable="true" ondragstart="drag(event)" id="@task.TaskId" data-task-id="@task.TaskId" style="position: relative;">
-                    <h5>Nhiệm vụ: @task.TaskName</h5>
-                      <div class="dropdown ms-2" style="position: absolute; top: 6px; right: 16px;">
-                        <a href="#" class="dropdown-toggle font-size-16 text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="mdi mdi-dots-horizontal"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <a asp-action="EditTask"  asp-route-id="@task.TaskId" class="dropdown-item">Sửa</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item delete-item" type="submit" onclick="deleteTask(@task.TaskId)" data-id="project-items-8" href="javascript:void(0);">Xóa</a>
-                        </div>
-                    </div>
-                    <p> <b>Mô tả:</b>  @task.TaskDescription</p>
-                    <ul><b>Thành viên:</b>
-                        @if (Model.TaskUsers.ContainsKey(task.TaskId))
-                        {
-                            @foreach (var user in Model.TaskUsers[task.TaskId])
-                            {
-                                <li style="color: black;">@user.FullName</li>
-                            }
-                        }
-                    </ul>
-                    <p class="task-status custom-badge custom-badge-completed"> @task.StatusTask</p>
-                </div>
-            }
-        </div>
-
-        <div class="task-list" id="completedTasks" ondrop="drop(event, this)" ondragover="allowDrop(event)" style="max-height: 550px; overflow: auto;">
-            <h4  style="color: #038EDC;">Hoàn thành: @Model.CompletedTasks.Count</h4>
-            @foreach(var task in Model.CompletedTasks){
-                <div class="task" draggable="true" ondragstart="drag(event)" id="@task.TaskId" data-task-id="@task.TaskId" style="position: relative;">
-                    <h5>Nhiệm vụ: @task.TaskName</h5>
-                    <div class="dropdown ms-2" style="position: absolute; top: 6px; right: 16px;">
-                        <a href="#" class="dropdown-toggle font-size-16 text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="mdi mdi-dots-horizontal"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <a asp-action="EditTask"  asp-route-id="@task.TaskId" class="dropdown-item">Sửa</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item delete-item" type="submit" onclick="deleteTask(@task.TaskId)" data-id="project-items-8" href="javascript:void(0);">Xóa</a>
-                        </div>
-                    </div>
-                    <p> <b>Mô tả:</b> @task.TaskDescription</p>
-                    <ul><b>Thành viên:</b>
-                        @if (Model.TaskUsers.ContainsKey(task.TaskId))
-                        {
-                            @foreach (var user in Model.TaskUsers[task.TaskId])
-                            {
-                                <li style="color: black;">@user.FullName</li>
-                            }
-                        }
-                    </ul>
-                    <p class="task-status custom-badge custom-badge-completed">
-                        @task.StatusTask</p>
-                </div>
-            }
-        </div>
-    </div>
 </div>
 
-
-
-@*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>*@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-</body>
+
 <script>
-
-
-   
-     function allowDrop(event) {
+    function allowDrop(event) {
         event.preventDefault();
     }
 
@@ -232,26 +165,25 @@
     }
 
     function updateTaskStatus(taskId, newStatus) {
-    fetch(`/Task/UpdateStatus`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ taskId: taskId, newStatus: newStatus })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log("Task status updated successfully.");
-        } else {
-            console.log("Failed to update task status.");
-        }
-    })
-    .catch(error => console.error("Error:", error));
-}
+        fetch(`/Task/UpdateStatus`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ taskId: taskId, newStatus: newStatus })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Task status updated successfully.");
+            } else {
+                console.log("Failed to update task status.");
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
 
-
- async function deleteTask(id) {
+    async function deleteTask(id) {
         if (confirm('Bạn có chắc chắn muốn xóa nhiệm vụ này không?')) {
             try {
                 const response = await fetch(`/Task/DeleteTask/${id}`, {
@@ -276,10 +208,10 @@
         }
     }
 
-     async function searchTask() {
+    async function searchTask() {
         const searchString = document.getElementById('searchTaskBox').value;
         try {
-            const response = await fetch(`@Url.Action("SearchTaskByName", "Task")?searchString=${encodeURIComponent(searchString)}`);
+            const response = await fetch(`/Task/SearchTaskByName?searchString=${encodeURIComponent(searchString)}`);
             if (response.ok) {
                 const result = await response.text();
                 document.querySelector('.task-list').innerHTML = result;
@@ -290,6 +222,7 @@
             console.error('Error fetching tasks', error);
         }
     }
-
 </script>
+</body>
 </html>
+

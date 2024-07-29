@@ -114,23 +114,41 @@ namespace ProjectManagement_11_07.Repository
             return true;
         }
 
-     
 
-        public async Task<List<Projects>> SearchProjectsByName(string searchString)
+
+        public async Task<List<Projects>> SearchProjects(string searchString, string statusProject, int? minMemberCount, int? maxMemberCount, DateTime? startDate)
         {
-            if (string.IsNullOrWhiteSpace(searchString))
+            var query = _dbContext.Projects
+                .Include(p => p.ProjectUsers)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchString))
             {
-                return await _dbContext.Projects
-                    .Include(p => p.ProjectUsers)
-                    .ToListAsync();
+                query = query.Where(p => p.ProjectName.Contains(searchString));
             }
 
-            return await _dbContext.Projects
-                .Include(p => p.ProjectUsers)
-                .Where(p => p.ProjectName.Contains(searchString))
-                .ToListAsync();
-        }
+            if (!string.IsNullOrWhiteSpace(statusProject))
+            {
+                query = query.Where(p => p.StatusProject == statusProject);
+            }
 
+            if (minMemberCount.HasValue)
+            {
+                query = query.Where(p => p.ProjectUsers.Count >= minMemberCount.Value);
+            }
+
+            if (maxMemberCount.HasValue)
+            {
+                query = query.Where(p => p.ProjectUsers.Count <= maxMemberCount.Value);
+            }
+
+            if (startDate.HasValue)
+            {
+                query = query.Where(p => p.StartDate >= startDate.Value);
+            }
+
+            return await query.ToListAsync();
+        }
 
     }
 }
